@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Movie</title>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.js"
+      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+      crossorigin="anonymous"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.6.0/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <section id="search" class="ml-3 p-5">
+      <form action="">
+        <input
+          type="text"
+          placeholder="Search here"
+          class="input input-bordered w-full max-w-xs" />
+      </form>
+    </section>
+    <section class="p-5" id="movie">
+      <div class="card w-96 bg-base-100 shadow-xl">
+        <figure>
+          <img
+            src=""
+            alt="Shoes" id="movie-img" />
+        </figure>
+        <div class="card-body">
+          <h2 class="card-title">
+            Shoes!
+            <div class="badge badge-secondary">NEW</div>
+          </h2>
+          <p>If a dog chews shoes whose shoes does he choose?</p>
+          <div class="card-actions justify-end">
+            <div class="badge badge-outline">Fashion</div>
+            <div class="badge badge-outline">Products</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="axiosMovie.js"></script>
+  </body>
+</html>
