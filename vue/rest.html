@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="data">
+
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      const products = async () => {
+        const res = await axios.get("https://dummyjson.com/products");
+        const data = res.data.products
+
+        const app = document.getElementById('data')
+        data.forEach(prod => {
+            app.innerHTML += `<p>${prod.title}</p>`
+        });
+      };
+
+      products();
+    </script>
+  </body>
+</html>

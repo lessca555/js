@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>shop vue</title>
     <link
       href="https://cdn.jsdelivr.net/npm/daisyui@4.6.0/dist/full.min.css"
       rel="stylesheet"
@@ -11,12 +11,39 @@
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
-    <div id="app">
-      <ul>
-        <img v-bind:src="mess.image" alt="" class="w-96">
-        <li>{{ mess.nama }}</li>
-        <li>{{ mess.umur }}</li>
-      </ul>
+    <div id="app" class="flex flex-col flex-wrap m-5 gap-5 justify-center">
+      <div class="form-inline">
+        <label for="" class="font-weight-bold mr-2">Max</label>
+        <input type="number" class="form-control" v-model="maxPrice" />
+        <input
+          type="range"
+          min="0"
+          max="1000"
+          class="range"
+          v-model="maxPrice" />
+      </div>
+      <div class="flex flex-wrap justify-center gap-5">
+        <div v-for="prod in item" :key="prod.id">
+          <div v-if="prod.price <= maxPrice">
+            <div class="card card-compact w-96 bg-base-100 shadow-xl">
+              <figure>
+                <img :src="prod.thumbnail" alt="Shoes" class="h-[250px]" />
+              </figure>
+              <div class="card-body">
+                <h2 class="card-title">{{ prod.title }}</h2>
+                <p>{{ prod.description }}</p>
+                <span>$ {{ prod.price }}</span>
+                <div class="card-actions justify-end">
+                  <button class="btn btn-primary">Buy Now</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div v-for="prod in item" :key="item.id">
+        <p>{{ prod.title }}</p>
+      </div> -->
     </div>
 
     <script
@@ -24,19 +51,26 @@
       integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
       crossorigin="anonymous"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
-      const { createApp, ref, reactive } = Vue;
+      const { createApp, ref, reactive, onMounted, toRefs } = Vue;
 
       createApp({
         setup() {
-          const mess = reactive({
-            nama: "tian",
-            umur: "22",
-            image:
-              "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          const data = reactive({
+            maxPrice: 1000,
+            item: [],
           });
+
+          const products = async () => {
+            const res = await axios.get("https://dummyjson.com/products");
+            data.item = res.data.products;
+          };
+
+          onMounted(products);
+
           return {
-            mess,
+            ...toRefs(data),
           };
         },
       }).mount("#app");
