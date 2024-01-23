@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>shop vue</title>
+    <title>Shop Vue</title>
     <link
       href="https://cdn.jsdelivr.net/npm/daisyui@4.6.0/dist/full.min.css"
       rel="stylesheet"
@@ -13,14 +13,49 @@
   <body>
     <div id="app" class="flex flex-col flex-wrap m-5 gap-5 justify-center">
       <div class="form-inline">
-        <label for="" class="font-weight-bold mr-2">Max</label>
-        <input type="number" class="form-control" v-model="maxPrice" />
-        <input
-          type="range"
-          min="0"
-          max="1000"
-          class="range"
-          v-model="maxPrice" />
+        <div class="flex flex-col">
+          <div class="flex items-center">
+            <div class="w-[50%]">
+              <label for="" class="font-weight-bold mr-2">Max</label>
+              <input type="number" class="form-control" v-model="maxPrice" />
+            </div>
+            <div class="flex justify-end w-[50%]">
+              <div class="drawer drawer-end flex justify-end items-center">
+                <input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
+                <div class="drawer-content">
+                  <!-- Page content here -->
+                  <label
+                    for="my-drawer-4"
+                    class="drawer-button flex cursor-pointer">
+                    <span class="text-4xl">&#128722;</span
+                    ><span class="ml-[-25px] badge badge-accent"
+                      >{{ cart.length }}</span
+                    >
+                  </label>
+                </div>
+                <div class="drawer-side z-50">
+                  <label
+                    for="my-drawer-4"
+                    aria-label="close sidebar"
+                    class="drawer-overlay"></label>
+                  <ul
+                    class="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+                    <!-- Sidebar content here -->
+                    <li v-for="item in cart" :key="item.id">
+                      <a> {{ item.title }} </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <input
+            type="range"
+            min="0"
+            max="1000"
+            class="range mt-2"
+            v-model="maxPrice" />
+        </div>
       </div>
       <div class="flex flex-wrap justify-center gap-5">
         <div v-for="prod in item" :key="prod.id">
@@ -34,7 +69,10 @@
                 <p>{{ prod.description }}</p>
                 <span>$ {{ prod.price }}</span>
                 <div class="card-actions justify-end">
-                  <button class="btn btn-primary">Buy Now</button>
+                  <!-- <button v-on:click="cart.push(prod)" class="btn btn-primary">Buy Now</button> -->
+                  <button v-on:click="addItem(prod)" class="btn btn-primary">
+                    Buy Now
+                  </button>
                 </div>
               </div>
             </div>
@@ -60,6 +98,7 @@
           const data = reactive({
             maxPrice: 1000,
             item: [],
+            cart: [],
           });
 
           const products = async () => {
@@ -67,10 +106,20 @@
             data.item = res.data.products;
           };
 
+          const addItem = (items) => {
+            console.log("before", data.cart);
+            data.cart.push(reactive(items));
+            // data.cart.push({ ...items, key: data.cart.length });
+
+            // console.log(items.title);
+            console.log("after", data.cart);
+          };
+
           onMounted(products);
 
           return {
             ...toRefs(data),
+            addItem,
           };
         },
       }).mount("#app");
